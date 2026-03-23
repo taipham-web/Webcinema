@@ -1,0 +1,63 @@
+name: Deploy to DevOps Classroom
+
+on:
+  push:
+    branches:
+      - main # Chạy action khi có thay đổi trên nhánh main
+
+jobs:
+  deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Lấy mã nguồn (Checkout)
+        uses: actions/checkout@v4
+
+      # (TÙY CHỌN: Nếu bạn cần build và push Docker image lên Docker Hub trước)
+      # - name: Đăng nhập Docker Hub
+      #   uses: docker/login-action@v3
+      #   with:
+      #     username: ${{ secrets.DOCKER_USERNAME }}
+      #     password: ${{ secrets.DOCKER_PASSWORD }}
+      #
+      # - name: Build và Push Server
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     context: ./server
+      #     push: true
+      #     tags: your_dockerhub_username/webcinema-server:latest
+      #
+      # - name: Build và Push Client 
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     context: ./client
+      #     push: true
+      #     tags: your_dockerhub_username/webcinema-client:latest
+
+      - name: Triển khai lên DevOps Classroom
+        run: |
+          # Sửa đổi REPO theo đúng yêu cầu của hệ thống (ví dụ: taipham-web/Webcinema hoặc tên repo docker)
+          REPO="repository/docker" 
+          
+          # Gọi Webhook
+          RESPONSE=$(curl -sS -w "\n%{http_code}" -X POST "${{ secrets.DEPLOY_URL }}?repo=$REPO&tag=latest")
+          
+          # Tách Body và HTTP Status Code
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          CODE=$(echo "$RESPONSE" | tail -n1)
+          
+          echo "Webhook HTTP: $CODE"
+          
+          if [ "$CODE" -lt 200 ] || [ "$CODE" -ge 300 ]; then
+            echo "Deploy thất bại. Xem chi tiết trong nhóm log bên dưới."
+            echo "::group::Chi tiết webhook JSON"
+            echo "$BODY" | python3 -m json.tool 2>/dev/null || echo "$BODY"
+            echo "::endgroup::"
+            exit 1
+          fi
+          
+          echo "Deploy thành công."
+          echo "::group::Chi tiết webhook JSON"
+          echo "$BODY" | python3 -m json.tool 2>/dev/null || echo "$BODY"
+          echo "::endgroup::"
