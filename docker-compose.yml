@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  # Database service
+  mongodb:
+    image: mongo:6-jammy
+    container_name: cinemaweb-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    restart: always
+
+  # Backend Server
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: cinemaweb-server
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://mongodb:27017/cinemaweb
+      - JWT_SECRET=your_jwt_secret_here
+      - CLIENT_URL=http://localhost:3000
+      # Change TMDB_API_KEY value to your desired keys
+      - TMDB_API_KEY=your-tmdb-api-key
+    volumes:
+      - server_uploads:/app/uploads
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+
+  # Frontend Web Client
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        - REACT_APP_API_URL=http://localhost:5000/api
+    container_name: cinemaweb-client
+    ports:
+      - "3000:80" # Exposed to 3000 locally
+    depends_on:
+      - server
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:
+  server_uploads:

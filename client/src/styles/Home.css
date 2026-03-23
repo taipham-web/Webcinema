@@ -1,0 +1,310 @@
+.home {
+  width: 100%;
+  overflow-x: clip;
+  overflow-y: visible;
+  padding-bottom: 50px;
+}
+
+.hero {
+  position: relative;
+  height: 95vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.hero-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(20, 20, 20, 0.95) 0%,
+    rgba(20, 20, 20, 0.4) 50%,
+    transparent 100%
+  ),
+  linear-gradient(
+    to bottom,
+    rgba(20, 20, 20, 0.1) 0%,
+    rgba(20, 20, 20, 0.8) 80%,
+    #141414 100%
+  );
+  z-index: -1;
+}
+
+.hero-content {
+  padding: 0 50px;
+  max-width: 700px;
+  z-index: 1;
+}
+
+.hero-badge {
+  display: inline-block;
+  background-color: transparent;
+  color: #e50914;
+  font-weight: 800;
+  letter-spacing: 2px;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  border-left: 3px solid #e50914;
+  padding-left: 10px;
+}
+
+.hero-title {
+  font-size: 4.5rem;
+  font-weight: 900;
+  margin-bottom: 25px;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+  line-height: 1.1;
+  color: #fff;
+}
+
+.hero-description {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  margin-bottom: 35px;
+  color: #d1d1d1;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+  font-weight: 400;
+  max-width: 600px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.btn {
+  padding: 12px 32px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.2s;
+  border: none;
+}
+
+.btn-play {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.btn-play:hover {
+  background-color: #d8d8d8;
+  transform: scale(1.05);
+}
+
+.btn-info {
+  background-color: rgba(109, 109, 110, 0.7);
+  color: #ffffff;
+}
+
+.btn-info:hover {
+  background-color: rgba(109, 109, 110, 0.9);
+  transform: scale(1.05);
+}
+
+.movie-sections {
+  margin-top: -120px;
+  position: relative;
+  z-index: 10;
+  padding: 0 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.movie-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0px; /* Bỏ gap để tự điều chỉnh khoảng cách thủ công an toàn hơn */
+  position: relative;
+  z-index: 1;
+  transition: z-index 0.3s;
+}
+
+.movie-row:hover {
+  z-index: 50; /* Hàng phim nào được hover sẽ nổi lên trên tất cả các hàng phim khác */
+}
+
+.movie-row-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 10px;
+  padding-left: 20px;
+  z-index: 2;
+  position: relative;
+}
+
+.slider-wrapper {
+  position: relative;
+}
+
+.slider-btn {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50px;
+  background: rgba(20, 20, 20, 0.5); /* Nền mờ đặc trưng giống mảng blur */
+  border: none;
+  color: white;
+  font-size: 3.5rem;
+  font-weight: 300;
+  cursor: pointer;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease-in-out;
+  opacity: 0;
+  backdrop-filter: blur(4px); /* Hiệu ứng kính */
+}
+
+.slider-wrapper:hover .slider-btn {
+  opacity: 1;
+}
+
+.slider-btn:hover {
+  background: rgba(20, 20, 20, 0.85);
+  font-size: 4.5rem; /* Phóng to nhẹ mũi tên khi hover */
+}
+
+.slider-btn.left {
+  left: -50px; /* Lấn ra 50px ăn gian phần padding của parent để dính sát mép trái */
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.slider-btn.right {
+  right: -50px; /* Ăn gian phần padding 50px để dính sát mép phải */
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.movie-row-container {
+  display: flex;
+  gap: 15px;
+  /* CRITICAL: Must be visible to avoid clipping hover cards vertically */
+  overflow: visible;
+  padding: 30px 20px; 
+  margin: 0;
+  transition: transform 0.4s ease-in-out;
+  width: max-content; /* Ensure container expands to hold all children */
+}
+
+.movie-row-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+.hero-genre-tags {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+  margin-top: -10px;
+}
+
+.genre-tag {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+  backdrop-filter: blur(4px);
+}
+
+.mini-genre {
+  background: rgba(255, 255, 255, 0.15);
+  color: #e5e5e5;
+  font-size: 0.7rem;
+  padding: 2px 7px;
+  border-radius: 3px;
+}
+
+/* Loading Screen */
+.loading-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  gap: 20px;
+  color: #b3b3b3;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #e50914;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Error Screen */
+.error-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  gap: 20px;
+  color: #b3b3b3;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #737373;
+  line-height: 2;
+}
+
+@media (max-width: 768px) {
+  .hero-content {
+    padding: 0 20px;
+  }
+  .hero-title {
+    font-size: 3rem;
+  }
+  .movie-sections {
+    padding: 0 20px;
+  }
+  .slider-btn.left {
+    left: -20px;
+    width: 35px;
+    font-size: 2.5rem;
+  }
+  .slider-btn.right {
+    right: -20px;
+    width: 35px;
+    font-size: 2.5rem;
+  }
+  .btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
+}
